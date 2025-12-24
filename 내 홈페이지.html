@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Portfolio - 방송영상 크리에이터</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* 헤더 */
+        header {
+            position: fixed;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #4ecdc4;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #4ecdc4;
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* 히어로 섹션 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-30px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #95e1d3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: #aaa;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            display: inline-block;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        /* 섹션 공통 스타일 */
+        section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 48px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+
+        /* 비디오 그리드 */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumbnail::before {
+            content: '▶';
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+        }
+
+        .video-info {
+            padding: 25px;
+        }
+
+        .video-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #4ecdc4;
+        }
+
+        .video-info p {
+            color: #aaa;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 블로그 섹션 */
+        .blog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .blog-item {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 35px;
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.3s;
+        }
+
+        .blog-item:hover {
+            background: #222;
+            transform: translateX(10px);
+        }
+
+        .blog-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .blog-item .date {
+            color: #4ecdc4;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .blog-item p {
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .read-more {
+            color: #4ecdc4;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: gap 0.3s;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        /* 어바웃 섹션 */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #4ecdc4;
+        }
+
+        .about-text p {
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .skill-tag {
+            padding: 10px 20px;
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid #4ecdc4;
+            border-radius: 25px;
+            font-size: 14px;
+            color: #4ecdc4;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+        }
+
+        /* 연락 섹션 */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            color: #aaa;
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .contact-link {
+            padding: 15px 35px;
+            background: #1a1a1a;
+            color: #4ecdc4;
+            text-decoration: none;
+            border-radius: 50px;
+            border: 2px solid #4ecdc4;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-link:hover {
+            background: #4ecdc4;
+            color: #0a0a0a;
+            transform: translateY(-3px);
+        }
+
+        /* 푸터 */
+        footer {
+            background: #0a0a0a;
+            padding: 40px 50px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            color: #666;
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <div class="logo">STUDIO</div>
+        <nav>
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#videos">VIDEOS</a></li>
+                <li><a href="#blog">BLOG</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Creative Visual Studio</h1>
+            <p>영상으로 이야기를 전하는 크리에이터</p>
+            <a href="#videos" class="cta-button">작품 보기</a>
+        </div>
+    </section>
+
+    <!-- 비디오 포트폴리오 -->
+    <section id="videos">
+        <h2 class="section-title">Video Portfolio</h2>
+        <div class="video-grid">
+            <div class="video-card">
+                <div class="video-thumbnail"></div>
+                <div class="video-info">
+                    <h3>다큐멘터리 - 도시의 밤</h3>
+                    <p>서울의 밤 풍경을 담은 시네마틱 다큐멘터리. 타임랩스와 슬로우모션을 활용한 영상미.</p>
+                    <div class="video-meta">
+                        <span>⏱ 5:24</span>
+                        <span>👁 2.3K views</span>
+                        <span>📅 2024.01</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                <div class="video-info">
+                    <h3>브랜드 광고 영상</h3>
+                    <p>감각적인 편집과 컬러그레이딩으로 완성한 제품 프로모션 영상.</p>
+                    <div class="video-meta">
+                        <span>⏱ 1:30</span>
+                        <span>👁 5.1K views</span>
+                        <span>📅 2023.12</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
+                <div class="video-info">
+                    <h3>뮤직비디오 - 여름의 기억</h3>
+                    <p>인디 아티스트와 협업한 감성적인 뮤직비디오 프로젝트.</p>
+                    <div class="video-meta">
+                        <span>⏱ 3:45</span>
+                        <span>👁 8.7K views</span>
+                        <span>📅 2023.11</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
+                <div class="video-info">
+                    <h3>여행 브이로그 - 제주</h3>
+                    <p>제주도의 숨겨진 명소를 담은 시네마틱 여행 브이로그.</p>
+                    <div class="video-meta">
+                        <span>⏱ 12:18</span>
+                        <span>👁 12K views</span>
+                        <span>📅 2023.10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);"></div>
+                <div class="video-info">
+                    <h3>기업 홍보영상</h3>
+                    <p>스타트업 기업의 비전과 가치를 담은 홍보 영상 제작.</p>
+                    <div class="video-meta">
+                        <span>⏱ 2:50</span>
+                        <span>👁 3.4K views</span>
+                        <span>📅 2023.09</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-thumbnail" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div>
+                <div class="video-info">
+                    <h3>튜토리얼 - 영상편집 팁</h3>
+                    <p>초보자를 위한 프리미어 프로 컬러그레이딩 가이드.</p>
+                    <div class="video-meta">
+                        <span>⏱ 15:32</span>
+                        <span>👁 25K views</span>
+                        <span>📅 2023.08</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 블로그 섹션 -->
+    <section id="blog">
+        <h2 class="section-title">Blog & Articles</h2>
+        <div class="blog-list">
+            <div class="blog-item">
+                <div class="date">2024년 1월 15일</div>
+                <h3>시네마틱 영상을 만드는 5가지 촬영 기법</h3>
+                <p>영화 같은 영상을 만들기 위한 카메라 무브먼트와 구도 설정 방법에 대해 실제 사례와 함께 설명합니다. 팬, 틸트, 달리, 트래킹 샷 등의 기본 기법부터 짐벌과 슬라이더를 활용한 응용 기법까지...</p>
+                <a href="#" class="read-more">더 읽기 →</a>
+            </div>
+
+            <div class="blog-item">
+                <div class="date">2024년 1월 8일</div>
+                <h3>컬러그레이딩으로 영상의 분위기 극대화하기</h3>
+                <p>DaVinci Resolve를 활용한 컬러그레이딩 워크플로우와 LUT 활용법. 영화 같은 색감을 만드는 실전 노하우를 공유합니다. 프라이머리 컬러 코렉션부터 세컨더리 조정까지...</p>
+                <a href="#" class="read-more">더 읽기 →</a>
+            </div>
+
+            <div class="blog-item">
+                <div class="date">2023년 12월 28일</div>
+                <h3>스토리텔링이 있는 영상을 만드는 방법</h3>
+                <p>단순한 영상 편집을 넘어 감동을 주는 스토리텔링 구조 설계하기. 3막 구조와 감정 곡선을 활용한 서사 구성 방법을 실제 프로젝트 사례와 함께 분석합니다...</p>
+                <a href="#" class="read-more">더 읽기 →</a>
+            </div>
+
+            <div class="blog-item">
+                <div class="date">2023년 12월 20일</div>
+                <h3>유튜브 크리에이터를 위한 장비 추천</h3>
+                <p>초보부터 전문가까지, 예산별로 추천하는 카메라와 조명, 음향 장비. 10만원대부터 500만원대까지 실제 사용 후기와 함께 상세하게 리뷰합니다...</p>
+                <a href="#" class="read-more">더 읽기 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 소개 섹션 -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>안녕하세요, 영상 크리에이터입니다</h3>
+                <p>5년 이상의 방송영상 제작 경험을 바탕으로 브랜드 영상, 광고, 뮤직비디오 등 다양한 장르의 콘텐츠를 제작하고 있습니다.</p>
+                <p>스토리텔링과 영상미를 중요하게 생각하며, 클라이언트의 메시지를 효과적으로 전달하는 것을 최우선 목표로 합니다.</p>
+                <p>촬영, 편집, 컬러그레이딩, 모션그래픽까지 전 과정을 직접 수행하며, 항상 새로운 기술과 트렌드를 학습하고 있습니다.</p>
+                
+                <div class="skills">
+                    <span class="skill-tag">Adobe Premiere Pro</span>
+                    <span class="skill-tag">DaVinci Resolve</span>
+                    <span class="skill-tag">After Effects</span>
+                    <span class="skill-tag">Final Cut Pro</span>
+                    <span class="skill-tag">Cinema 4D</span>
+                    <span class="skill-tag">Cinematography</span>
+                    <span class="skill-tag">Color Grading</span>
+                    <span class="skill-tag">Motion Graphics</span>
+                </div>
+            </div>
+            <div class="profile-image">🎬</div>
+        </div>
+    </section>
+
+    <!-- 연락 섹션 -->
+    <section id="contact">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-content">
+            <p>새로운 프로젝트나 협업 제안은 언제나 환영합니다.<br>
+            아래 연락처로 편하게 연락 주세요!</p>
+            <div class="contact-links">
+                <a href="mailto:your@email.com" class="contact-link">📧 Email</a>
+                <a href="#" class="contact-link">💼 LinkedIn</a>
+                <a href="#" class="contact-link">📷 Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2024 Creative Visual Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 스크롤 시 헤더 스타일 변경
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+            } else {
+                header.style.background = 'rgba(10, 10, 10, 0.9)';
+            }
+        });
+    </script>
+</body>
+</html>
